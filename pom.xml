@@ -94,6 +94,7 @@
         		<configuration>
         			<archive>
         				<manifest>
+							<mainClass>Morse</mainClass>
         					<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
         					<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
        					</manifest>

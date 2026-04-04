@@ -1,17 +1,42 @@
-//package org.tauasa.morse;
-
+/*
+ * Copyright 2026 Tauasa Timoteo
+ * 
+ * Permission is hereby granted, free of charge, to any person 
+ * obtaining a copy of this software and associated documentation 
+ * files (the “Software”), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, 
+ * publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so, 
+ * subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be 
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, 
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-
+ * INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN 
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF 
+ * OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+ * IN THE SOFTWARE.
+ */
 import java.util.Map;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
-
+/**
+ * Simple Morse code encoder and decoder in Java. 
+ * This program can convert text to Morse code and vice versa, as well as play the Morse code as audio tones. 
+ */
 public class Morse {
 
-    static final int SAMPLE_RATE = 44100;//8000
+    static final int SAMPLE_RATE = 44100;
     static final int DOT_DURATION = 100; // Duration of a dot in milliseconds
     static final int DASH_DURATION = DOT_DURATION * 3; // Duration of a dash is
     static final int FREQUENCY = 800; // Frequency of the Morse code tone in Hz
+    static final boolean PLAY_AUDIO = true; // Set to true to play audio tones
 
     private static final Map<Character, String> CHAR_TO_CODE = Map.ofEntries(
         Map.entry('A', ".-"), Map.entry('B', "-..."), Map.entry('C', "-.-."), Map.entry('D', "-.."),
@@ -39,10 +64,9 @@ public class Morse {
     );
 
     public static void main(String[] args)throws Exception{
-        String text = args.length == 0 ? "HELLO WORLD 123" : args[0].toUpperCase();
-        String encoded = encode(text);
+        String text = args.length == 0 ? "HELLO WORLD" : args[0].toUpperCase();
+        String encoded = encode(text);  
         System.out.println("Encoded: " + encoded);
-
         String decoded = decode(encoded);
         System.out.println("Decoded: " + decoded);
     }
@@ -56,51 +80,41 @@ public class Morse {
     }
 
     public static String encode(String text)throws Exception{
-
         char[] tokens = text.toCharArray();
-
         StringBuilder encoded = new StringBuilder();
-
         for (char token : tokens) {
             String code = charToCode(token);
             if (code != null) {
-                System.out.println(token+" -> "+code + " ");
+                System.out.println(token+" -> " + code);
                 encoded.append(code).append(" ");
-                char[] dotsNDashes = code.toCharArray();
-                for(int i=0;i<dotsNDashes.length;i++){
-                    if(dotsNDashes[i] == '.'){
-                        playTone(FREQUENCY, DOT_DURATION);
-                    }else if(dotsNDashes[i] == '-'){
-                        playTone(FREQUENCY, DASH_DURATION);
+                if(PLAY_AUDIO){
+                    char[] dotsNDashes = code.toCharArray();
+                    for(int i=0;i<dotsNDashes.length;i++){
+                        if(dotsNDashes[i] == '.'){
+                            playTone(FREQUENCY, DOT_DURATION);
+                        }else if(dotsNDashes[i] == '-'){
+                            playTone(FREQUENCY, DASH_DURATION);
+                        }
                     }
                 }
-                //playTone(FREQUENCY, DOT_DURATION);
             }
         }
-
-        //return the encoded string
         return encoded.toString().trim();
-
     }
 
     public static String decode(String encoded){
-
         String[] tokens = encoded.split(" ");
-
         StringBuilder decoded = new StringBuilder();
-
         for (String token : tokens) {
             String _char = codeToChar(token);
-
             if (_char != null) {
-                System.out.println(token+" -> "+_char + " ");
-                decoded.append(_char).append(" ");
+                System.out.println(token+" -> "+_char);
+                decoded.append(_char);
+            }else{
+                decoded.append(" ");
             }
         }
-
-        //return the encoded string
         return decoded.toString().trim();
-
     }
 
     private static void playTone(int frequency, int durationMs) throws Exception {
