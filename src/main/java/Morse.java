@@ -74,7 +74,7 @@ public class Morse {
                         playTone(FREQUENCY, DASH_DURATION);
                     }
                 }
-                playTone(FREQUENCY, DOT_DURATION);
+                //playTone(FREQUENCY, DOT_DURATION);
             }
         }
 
