@@ -39,7 +39,7 @@ public class Morse {
     );
 
     public static void main(String[] args)throws Exception{
-        String text = "HELLO WORLD 123";
+        String text = args.length == 0 ? "HELLO WORLD 123" : args[0].toUpperCase();
         String encoded = encode(text);
         System.out.println("Encoded: " + encoded);
 
