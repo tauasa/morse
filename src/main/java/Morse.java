@@ -33,6 +33,8 @@ import javax.sound.sampled.SourceDataLine;
 public class Morse {
 
     static final int SAMPLE_RATE = 44100;
+    static final int SAMPLE_SIZE = 8; // 8 bits per sample
+    static final int NUM_CHANNELS = 1; // Mono
     static final int DOT_DURATION = 100; // Duration of a dot in milliseconds
     static final int DASH_DURATION = DOT_DURATION * 3; // Duration of a dash is
     static final int FREQUENCY = 800; // Frequency of the Morse code tone in Hz
@@ -64,11 +66,28 @@ public class Morse {
     );
 
     public static void main(String[] args)throws Exception{
-        String text = args.length == 0 ? "HELLO WORLD" : args[0].toUpperCase();
-        String encoded = encode(text);  
-        System.out.println("Encoded: " + encoded);
-        String decoded = decode(encoded);
-        System.out.println("Decoded: " + decoded);
+        if(args.length != 2){
+            usage();
+            System.exit(1);
+        }
+        boolean encode = "-e".equals(args[0]);
+        String text = args[1].toUpperCase();
+
+        Morse morse = new Morse();
+        
+        if(encode){
+            System.out.println("Encoding: " + text);
+            System.out.println(morse.encode(text));
+        }else{
+            System.out.println("Decoding: " + text);
+            System.out.println(morse.decode(text));
+        }
+    }
+
+    public static void usage(){
+        System.out.println("Usage: java Morse <-e|-d> <text>");
+        System.out.println("  -e: Encode text to Morse code");
+        System.out.println("  -d: Decode Morse code to text");
     }
 
     public static String charToCode(char c){
@@ -76,10 +95,11 @@ public class Morse {
     }
 
     public static String codeToChar(String code){
-        return CODE_TO_CHAR.get(code).toString();
+        Character result = CODE_TO_CHAR.get(code);
+        return result != null ? result.toString() : null;
     }
 
-    public static String encode(String text)throws Exception{
+    public String encode(String text)throws Exception{
         char[] tokens = text.toCharArray();
         StringBuilder encoded = new StringBuilder();
         for (char token : tokens) {
@@ -91,9 +111,9 @@ public class Morse {
                     char[] dotsNDashes = code.toCharArray();
                     for(int i=0;i<dotsNDashes.length;i++){
                         if(dotsNDashes[i] == '.'){
-                            playTone(FREQUENCY, DOT_DURATION);
+                            playTone(DOT_DURATION);
                         }else if(dotsNDashes[i] == '-'){
-                            playTone(FREQUENCY, DASH_DURATION);
+                            playTone(DASH_DURATION);
                         }
                     }
                 }
@@ -102,7 +122,7 @@ public class Morse {
         return encoded.toString().trim();
     }
 
-    public static String decode(String encoded){
+    public String decode(String encoded){
         String[] tokens = encoded.split(" ");
         StringBuilder decoded = new StringBuilder();
         for (String token : tokens) {
@@ -117,13 +137,13 @@ public class Morse {
         return decoded.toString().trim();
     }
 
-    private static void playTone(int frequency, int durationMs) throws Exception {
+    private static void playTone(int durationMs) throws Exception {
         byte[] buffer = new byte[durationMs * SAMPLE_RATE / 1000];
         for (int i = 0; i < buffer.length; i++) {
-            double angle = 2.0 * Math.PI * i * frequency / SAMPLE_RATE;
+            double angle = 2.0 * Math.PI * i * FREQUENCY / SAMPLE_RATE;
             buffer[i] = (byte) (Math.sin(angle) * 127.0);
         }
-        AudioFormat format = new AudioFormat(SAMPLE_RATE, 8, 1, true, false);
+        AudioFormat format = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE, NUM_CHANNELS, true, false);
         SourceDataLine line = AudioSystem.getSourceDataLine(format);
         line.open(format);
         line.start();

@@ -5,4 +5,8 @@ Simple Morse Code encoder/decoder
 
 To build: `mvn clean install`
 
-To run: `java Morse "[plain text]"`
+To encode: `java Morse -e "plain text"`
+
+To decode: `java Morse -d "... --- ..."`
+
+
