@@ -22,6 +22,7 @@
  * IN THE SOFTWARE.
  */
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -39,6 +40,8 @@ public class Morse {
     static final int DASH_DURATION = DOT_DURATION * 3; // Duration of a dash is
     static final int FREQUENCY = 800; // Frequency of the Morse code tone in Hz
     static final boolean PLAY_AUDIO = true; // Set to true to play audio tones
+    static final Pattern ALPHANUMERIC_PATTERN = Pattern.compile("[0-9a-zA-Z\\s]+");
+    static final Pattern DOTS_DASHES_PATTERN = Pattern.compile("[\\.\\-\\s]+");
 
     private static final Map<Character, String> CHAR_TO_CODE = Map.ofEntries(
         Map.entry('A', ".-"), Map.entry('B', "-..."), Map.entry('C', "-.-."), Map.entry('D', "-.."),
@@ -100,6 +103,9 @@ public class Morse {
     }
 
     public String encode(String text)throws Exception{
+        if(!ALPHANUMERIC_PATTERN.matcher(text).matches()){
+            throw new IllegalArgumentException("Can only encode alphanumerics (letters and digits only)");
+        }
         char[] tokens = text.toCharArray();
         StringBuilder encoded = new StringBuilder();
         for (char token : tokens) {
@@ -123,6 +129,9 @@ public class Morse {
     }
 
     public String decode(String encoded){
+        if(!DOTS_DASHES_PATTERN.matcher(encoded).matches()){
+            throw new IllegalArgumentException("Can only decode dots(.), dashes(-), and spaces");
+        }
         String[] tokens = encoded.split(" ");
         StringBuilder decoded = new StringBuilder();
         for (String token : tokens) {
