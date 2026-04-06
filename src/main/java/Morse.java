@@ -75,16 +75,15 @@ public class Morse {
         }
         boolean encode = "-e".equals(args[0]);
         String text = args[1].toUpperCase();
-
         Morse morse = new Morse();
-        
         if(encode){
             System.out.println("Encoding: " + text);
-            System.out.println(morse.encode(text));
-        }else{
-            System.out.println("Decoding: " + text);
-            System.out.println(morse.decode(text));
+            System.out.println("Encoded" + morse.encode(text));
+            System.exit(0);
         }
+        System.out.println("Decoding: " + text);
+        System.out.println("Decoded" + morse.decode(text));
+        System.exit(0);
     }
 
     public static void usage(){
@@ -111,7 +110,7 @@ public class Morse {
         for (char token : tokens) {
             String code = charToCode(token);
             if (code != null) {
-                System.out.println(token+" -> " + code);
+                System.out.println(token+"\t-> " + code);
                 encoded.append(code).append(" ");
                 if(PLAY_AUDIO){
                     char[] dotsNDashes = code.toCharArray();
@@ -137,7 +136,7 @@ public class Morse {
         for (String token : tokens) {
             String _char = codeToChar(token);
             if (_char != null) {
-                System.out.println(token+" -> "+_char);
+                System.out.println(token+"\t-> "+_char);
                 decoded.append(_char);
             }else{
                 decoded.append(" ");

@@ -79,6 +79,18 @@
 
 		<plugins>
 
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <mainClass>Morse</mainClass>
+                    <!--arguments>
+                        <argument>-e</argument>
+                    </arguments-->
+                </configuration>
+            </plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
