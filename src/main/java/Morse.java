@@ -39,9 +39,9 @@ public class Morse {
     static final int DOT_DURATION = 100; // Duration of a dot in milliseconds
     static final int DASH_DURATION = DOT_DURATION * 3; // Duration of a dash is
     static final int FREQUENCY = 800; // Frequency of the Morse code tone in Hz
-    static final boolean PLAY_AUDIO = true; // Set to true to play audio tones
     static final Pattern ALPHANUMERIC_PATTERN = Pattern.compile("[0-9a-zA-Z\\s]+");
     static final Pattern DOTS_DASHES_PATTERN = Pattern.compile("[\\.\\-\\s]+");
+    private boolean playAudio = true;
 
     private static final Map<Character, String> CHAR_TO_CODE = Map.ofEntries(
         Map.entry('A', ".-"), Map.entry('B', "-..."), Map.entry('C', "-.-."), Map.entry('D', "-.."),
@@ -68,6 +68,14 @@ public class Morse {
         Map.entry("---..", '8'), Map.entry("----.", '9')
     );
 
+    public Morse() {
+
+    }
+
+    public Morse(boolean playAudio) {
+        this.playAudio = playAudio;
+    }
+
     public static void main(String[] args)throws Exception{
         if(args.length != 2){
             usage();
@@ -78,11 +86,11 @@ public class Morse {
         Morse morse = new Morse();
         if(encode){
             System.out.println("Encoding: " + text);
-            System.out.println("Encoded" + morse.encode(text));
+            System.out.println("Encoded: " + morse.encode(text));
             System.exit(0);
         }
         System.out.println("Decoding: " + text);
-        System.out.println("Decoded" + morse.decode(text));
+        System.out.println("Decoded: " + morse.decode(text));
         System.exit(0);
     }
 
@@ -110,15 +118,15 @@ public class Morse {
         for (char token : tokens) {
             String code = charToCode(token);
             if (code != null) {
-                System.out.println(token+"\t-> " + code);
+                System.out.println("\t"+token+"\t->\t" + code);
                 encoded.append(code).append(" ");
-                if(PLAY_AUDIO){
+                if(playAudio){
                     char[] dotsNDashes = code.toCharArray();
                     for(int i=0;i<dotsNDashes.length;i++){
                         if(dotsNDashes[i] == '.'){
-                            playTone(DOT_DURATION);
+                            playTone(DOT_DURATION, FREQUENCY);
                         }else if(dotsNDashes[i] == '-'){
-                            playTone(DASH_DURATION);
+                            playTone(DASH_DURATION, FREQUENCY);
                         }
                     }
                 }
@@ -127,7 +135,7 @@ public class Morse {
         return encoded.toString().trim();
     }
 
-    public String decode(String encoded){
+    public String decode(String encoded)throws Exception{
         if(!DOTS_DASHES_PATTERN.matcher(encoded).matches()){
             throw new IllegalArgumentException("Can only decode dots(.), dashes(-), and spaces");
         }
@@ -136,19 +144,29 @@ public class Morse {
         for (String token : tokens) {
             String _char = codeToChar(token);
             if (_char != null) {
-                System.out.println(token+"\t-> "+_char);
+                System.out.println("\t"+token+"\t->\t"+_char);
                 decoded.append(_char);
+                if(playAudio){
+                    char[] dotsNDashes = token.toCharArray();
+                    for(int i=0;i<dotsNDashes.length;i++){
+                        if(dotsNDashes[i] == '.'){
+                            playTone(DOT_DURATION, FREQUENCY+200);
+                        }else if(dotsNDashes[i] == '-'){
+                            playTone(DASH_DURATION, FREQUENCY+200);
+                        }
+                    }
+                }
             }else{
-                decoded.append(" ");
+                System.out.println("\t"+token+"\t->\t???");
             }
         }
         return decoded.toString().trim();
     }
 
-    private static void playTone(int durationMs) throws Exception {
+    private static void playTone(int durationMs, int frequency) throws Exception {
         byte[] buffer = new byte[durationMs * SAMPLE_RATE / 1000];
         for (int i = 0; i < buffer.length; i++) {
-            double angle = 2.0 * Math.PI * i * FREQUENCY / SAMPLE_RATE;
+            double angle = 2.0 * Math.PI * i * frequency / SAMPLE_RATE;
             buffer[i] = (byte) (Math.sin(angle) * 127.0);
         }
         AudioFormat format = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE, NUM_CHANNELS, true, false);
