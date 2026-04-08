@@ -88,6 +88,9 @@ public class Morse {
             System.out.println("Encoding: " + text);
             System.out.println("Encoded: " + morse.encode(text));
             System.exit(0);
+        }else if(!"-d".equals(args[0])){
+            usage();
+            System.exit(1);
         }
         System.out.println("Decoding: " + text);
         System.out.println("Decoded: " + morse.decode(text));
