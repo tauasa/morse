@@ -37,7 +37,7 @@ public class Morse {
     static final int SAMPLE_SIZE = 8; // 8 bits per sample
     static final int NUM_CHANNELS = 1; // Mono
     static final int DOT_DURATION = 100; // Duration of a dot in milliseconds
-    static final int DASH_DURATION = DOT_DURATION * 3; // Duration of a dash is
+    static final int DASH_DURATION = DOT_DURATION * 3; // Duration of a dash is dot * 3
     static final int FREQUENCY = 800; // Frequency of the Morse code tone in Hz
     static final Pattern ALPHANUMERIC_PATTERN = Pattern.compile("[0-9a-zA-Z\\s]+");
     static final Pattern DOTS_DASHES_PATTERN = Pattern.compile("[\\.\\-\\s]+");
