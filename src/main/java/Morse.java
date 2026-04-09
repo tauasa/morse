@@ -78,13 +78,16 @@ public class Morse {
     }
 
     public static void main(String[] args)throws Exception{
-        if(args.length != 2){
+        if(args.length < 2){
             usage();
             System.exit(1);
         }
         boolean encode = "-e".equals(args[0]);
-        String text = args[1].toUpperCase();
-        Morse morse = new Morse();
+        boolean audioFlag = args.length > 2 && "-a".equals(args[1]);
+        String text = args.length > 2 ? args[2].toUpperCase() : args[1].toUpperCase();
+        
+        Morse morse = new Morse(audioFlag);
+
         if(encode){
             System.out.println("Encoding: " + text);
             System.out.println("Encoded: " + morse.encode(text));
@@ -99,9 +102,10 @@ public class Morse {
     }
 
     public static void usage(){
-        System.out.println("Usage: java Morse <-e|-d> <text>");
+        System.out.println("Usage: java Morse <-e|-d> [-a] <text>");
         System.out.println("  -e: Encode text to Morse code");
         System.out.println("  -d: Decode Morse code to text");
+        System.out.println("  -a: Play Morse code as audio");
     }
 
     public static String charToCode(char c){
