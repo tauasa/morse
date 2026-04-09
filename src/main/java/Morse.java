@@ -29,7 +29,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 /**
  * Simple Morse code encoder and decoder in Java. 
- * This program can convert text to Morse code and vice versa, as well as play the Morse code as audio tones. 
+ * This program converts text to Morse code and vice versa, as well as play the Morse code as audio tones. 
+ * @author Mufasa Tomato
  */
 public class Morse {
 
@@ -77,13 +78,16 @@ public class Morse {
     }
 
     public static void main(String[] args)throws Exception{
-        if(args.length != 2){
+        if(args.length < 2){
             usage();
             System.exit(1);
         }
         boolean encode = "-e".equals(args[0]);
-        String text = args[1].toUpperCase();
-        Morse morse = new Morse();
+        boolean audioFlag = args.length > 2 && "-a".equals(args[1]);
+        String text = args.length > 2 ? args[2].toUpperCase() : args[1].toUpperCase();
+        
+        Morse morse = new Morse(audioFlag);
+
         if(encode){
             System.out.println("Encoding: " + text);
             System.out.println("Encoded: " + morse.encode(text));
@@ -98,9 +102,10 @@ public class Morse {
     }
 
     public static void usage(){
-        System.out.println("Usage: java Morse <-e|-d> <text>");
+        System.out.println("Usage: java Morse <-e|-d> [-a] <text>");
         System.out.println("  -e: Encode text to Morse code");
         System.out.println("  -d: Decode Morse code to text");
+        System.out.println("  -a: Play Morse code as audio");
     }
 
     public static String charToCode(char c){
@@ -114,7 +119,7 @@ public class Morse {
 
     public String encode(String text)throws Exception{
         if(!ALPHANUMERIC_PATTERN.matcher(text).matches()){
-            throw new IllegalArgumentException("Can only encode alphanumerics (letters and digits only)");
+            throw new IllegalArgumentException("Can only encode alphanumerics. White space is ignored.)");
         }
         char[] tokens = text.toCharArray();
         StringBuilder encoded = new StringBuilder();
@@ -140,7 +145,7 @@ public class Morse {
 
     public String decode(String encoded)throws Exception{
         if(!DOTS_DASHES_PATTERN.matcher(encoded).matches()){
-            throw new IllegalArgumentException("Can only decode dots(.), dashes(-), and spaces");
+            throw new IllegalArgumentException("Can only decode dots(.) and dashes(-). White space is ignored.");
         }
         String[] tokens = encoded.split(" ");
         StringBuilder decoded = new StringBuilder();
