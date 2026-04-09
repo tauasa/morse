@@ -42,7 +42,7 @@ public class MorseTest {
     public void testEncodeInvalid() {
         Morse morse = new Morse(false);
         assertThrows(IllegalArgumentException.class, () -> morse.encode("A!"));
-        //assertThrows(IllegalArgumentException.class, () -> morse.encode("A B"));
+        //assertThrows(IllegalArgumentException.class, () -> morse.encode("A B"));// White space is ignored, so this should not throw an exception
     }
 
     @Test

@@ -29,7 +29,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 /**
  * Simple Morse code encoder and decoder in Java. 
- * This program can convert text to Morse code and vice versa, as well as play the Morse code as audio tones. 
+ * This program converts text to Morse code and vice versa, as well as play the Morse code as audio tones. 
+ * @author Mufasa Tomato
  */
 public class Morse {
 
@@ -114,7 +115,7 @@ public class Morse {
 
     public String encode(String text)throws Exception{
         if(!ALPHANUMERIC_PATTERN.matcher(text).matches()){
-            throw new IllegalArgumentException("Can only encode alphanumerics (letters and digits only)");
+            throw new IllegalArgumentException("Can only encode alphanumerics. White space is ignored.)");
         }
         char[] tokens = text.toCharArray();
         StringBuilder encoded = new StringBuilder();
@@ -140,7 +141,7 @@ public class Morse {
 
     public String decode(String encoded)throws Exception{
         if(!DOTS_DASHES_PATTERN.matcher(encoded).matches()){
-            throw new IllegalArgumentException("Can only decode dots(.), dashes(-), and spaces");
+            throw new IllegalArgumentException("Can only decode dots(.) and dashes(-). White space is ignored.");
         }
         String[] tokens = encoded.split(" ");
         StringBuilder decoded = new StringBuilder();
