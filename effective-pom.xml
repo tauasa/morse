@@ -42,8 +42,8 @@
     </developer>
   </developers>
   <properties>
-    <compiler.source>1.8</compiler.source>
-    <compiler.target>1.8</compiler.target>
+    <compiler.source>25</compiler.source>
+    <compiler.target>25</compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencyManagement />
@@ -108,11 +108,11 @@
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.2</version>
+          <version>3.11.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>2.5</version>
+          <version>3.3.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -127,7 +127,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.2</version>
+        <version>3.11.0</version>
         <executions>
           <execution>
             <id>default-compile</id>
@@ -136,8 +136,8 @@
               <goal>compile</goal>
             </goals>
             <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
+              <source>25</source>
+              <target>25</target>
             </configuration>
           </execution>
           <execution>
@@ -147,19 +147,19 @@
               <goal>testCompile</goal>
             </goals>
             <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
+              <source>25</source>
+              <target>25</target>
             </configuration>
           </execution>
         </executions>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>25</source>
+          <target>25</target>
         </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.5</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <id>default-jar</id>
