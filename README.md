@@ -1,7 +1,7 @@
 
-# **tui-morse (- ..- .. -- --- .-. ... .)**
+# **morse (-- --- .-. ... .)**
 
-Simple Morse Code encoder/decoder
+Simple Morse Code encoder/decoder in java. This doesn't produce CW but can be used over GMRS
 
 To build: `mvn clean install`
 <br/><br/>
