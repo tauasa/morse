@@ -39,6 +39,7 @@ public class Morse {
     static final int NUM_CHANNELS = 1; // Mono
     static final int DOT_DURATION = 100; // Duration of a dot in milliseconds
     static final int DASH_DURATION = DOT_DURATION * 3; // Duration of a dash is dot * 3
+    static final int SPACE_DURATION = DOT_DURATION * 7; // time between words is dot * 7
     static final int FREQUENCY = 800; // Frequency of the Morse code tone in Hz
     static final Pattern ALPHANUMERIC_PATTERN = Pattern.compile("[0-9a-zA-Z\\s]+");
     static final Pattern DOTS_DASHES_PATTERN = Pattern.compile("[\\.\\-\\s]+");
@@ -130,23 +131,40 @@ public class Morse {
         if(!ALPHANUMERIC_PATTERN.matcher(text).matches()){
             throw new IllegalArgumentException("Can only encode alphanumerics. White space is ignored.)");
         }
-        char[] tokens = text.toCharArray();
+        String[] words = text.split(" ");
         StringBuilder encoded = new StringBuilder();
-        for (char token : tokens) {
-            String code = charToCode(token);
-            if (code != null) {
-                System.out.println("\t"+token+"\t->\t" + code);
-                encoded.append(code).append(" ");
-                if(playAudio){
-                    char[] dotsNDashes = code.toCharArray();
-                    for(int i=0;i<dotsNDashes.length;i++){
-                        if(dotsNDashes[i] == '.'){
-                            playTone(DOT_DURATION, FREQUENCY);
-                        }else if(dotsNDashes[i] == '-'){
-                            playTone(DASH_DURATION, FREQUENCY);
+
+        for (int i=0;i<words.length;i++) {
+            String word = words[i];
+            char[] tokens = word.toCharArray();
+            for (char token : tokens) {
+                String code = charToCode(token);
+                if (code != null) {
+                    System.out.println("\t"+token+"\t->\t" + code);
+                    encoded.append(code).append(" ");
+                    if(playAudio){
+                        char[] dotsNDashes = code.toCharArray();
+                        for(char c : dotsNDashes){
+                            if(c != '.' && c != '-'){
+                                throw new IllegalArgumentException("Invalid Morse code: " + code);
+                            }
+                            switch (c) {
+                                case '.':
+                                    playTone(DOT_DURATION, FREQUENCY);
+                                    break;
+                                case '-':
+                                    playTone(DASH_DURATION, FREQUENCY);
+                                    break;
+                                default:
+                                    System.err.println("Character not supported: " + c);
+                                    break;
+                            }
                         }
                     }
                 }
+            }
+            if(i < words.length - 1){
+                Thread.sleep(SPACE_DURATION); // Pause between words
             }
         }
         return encoded.toString().trim();
@@ -154,7 +172,7 @@ public class Morse {
 
     public String decode(String encoded)throws Exception{
         if(!DOTS_DASHES_PATTERN.matcher(encoded).matches()){
-            throw new IllegalArgumentException("Can only decode dots(.) and dashes(-). White space is ignored.");
+            throw new IllegalArgumentException("Can only decode dots(.) and dashes(-)");
         }
         String[] tokens = encoded.split(" ");
         StringBuilder decoded = new StringBuilder();
