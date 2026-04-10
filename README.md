@@ -4,15 +4,17 @@
 Simple Morse Code encoder/decoder
 
 To build: `mvn clean install`
-<br/>
-Usage: `java Morse <-e|-d> [audioFlag] "Hello World"`
+<br/><br/>
+Usage: `java Morse <-e|-d> [-a] "Hello World"`
+<br/><br/>
+Supports characters `A-Z`, `0-9` and special characters `. , ? \ ! / & : ; - _ " $ @ = +`
 
 **From command line:**
 <br/>
 Encode an alphanumeric string: `java Morse -e -a "plain text"` -> `.--. .-.. .- .. -. - . -..- -`
 <br/>
 Decode a string of dits and dahs: `java Morse -d -a "... --- ..."` -> `SOS`
-<br/><br/>
+
 **Execute using Maven:**
 <br/>
 Encode a string with audio: `mvn exec:java -Dexec.args="-e -a \"once upon a time\""`
