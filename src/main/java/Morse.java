@@ -54,7 +54,12 @@ public class Morse {
         Map.entry('Y', "-.--"), Map.entry('Z', "--.."),
         Map.entry('0', "-----"), Map.entry('1', ".----"), Map.entry('2', "..---"), Map.entry('3', "...--"),
         Map.entry('4', "....-"), Map.entry('5', "....."), Map.entry('6', "-...."), Map.entry('7', "--..."),
-        Map.entry('8', "---.."), Map.entry('9', "----.")
+        Map.entry('8', "---.."), Map.entry('9', "----."),
+        Map.entry('.', ".-.-.-"), Map.entry(',', "--..--"), Map.entry('?', "..--.."), Map.entry('\'', ".---."),
+        Map.entry('!', "..-..-"), Map.entry('/', "-..-.."), Map.entry('&', ".-..."), Map.entry(':', "---..."),
+        Map.entry(';', "-.-.-."), Map.entry('-', "-....-"), Map.entry('_', "..-.-"), Map.entry('\"',".-..-."), 
+        Map.entry('$', "...-..-"), Map.entry('@', ".--.-."), Map.entry('=', "-...-"), Map.entry('+',".-.-.")
+        
     );
     private static final Map<String, Character> CODE_TO_CHAR = Map.ofEntries(
         Map.entry(".-", 'A'), Map.entry("-...", 'B'), Map.entry("-.-.", 'C'), Map.entry("-..", 'D'),
@@ -66,7 +71,11 @@ public class Morse {
         Map.entry("-.--", 'Y'), Map.entry("--..", 'Z'),
         Map.entry("-----", '0'), Map.entry(".----", '1'), Map.entry("..---", '2'), Map.entry("...--", '3'),
         Map.entry("....-", '4'), Map.entry(".....", '5'), Map.entry("-....", '6'), Map.entry("--...", '7'),
-        Map.entry("---..", '8'), Map.entry("----.", '9')
+        Map.entry("---..", '8'), Map.entry("----.", '9'),
+        Map.entry(".-.-.-", '.'), Map.entry("--..--", ','), Map.entry("..--..", '?'), Map.entry(".---.", '\''), 
+        Map.entry("..-..-", '!'), Map.entry("-..-..", '/'), Map.entry(".-...", '&'), Map.entry("---...", ':'), 
+        Map.entry("-.-.-.", ';'), Map.entry("-....-", '-'), Map.entry("..-.-", '_'), Map.entry(".-..-.", '\"'), 
+        Map.entry("...-..-", '$'), Map.entry(".--.-.", '@'), Map.entry("-...-", '='), Map.entry(".-.-.", '+')
     );
 
     public Morse() {

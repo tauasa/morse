@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ public class MorseTest {
 
     @Test
     public void testCharToCodeUnknown() {
-        assertNull(Morse.charToCode('!'));
+        assertNotNull(Morse.charToCode('!'));
         assertNull(Morse.charToCode(' '));
     }
 

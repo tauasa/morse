@@ -19,4 +19,3 @@ Encode a string with audio: `mvn exec:java -Dexec.args="-e -a \"once upon a time
 <br/>
 Decode a string without audio: `mvn exec:java -Dexec.args="-d \"... --- ...\""`
 <br/><br/>
-**Note:** does not support special characters, only alphanumerics
