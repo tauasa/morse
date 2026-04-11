@@ -1,24 +1,90 @@
+# Morse Code Converter
 
-# **morse (-- --- .-. ... .)**
+A Java command-line application that converts text ↔ Morse code with optional audio playback.
 
-Simple Morse Code encoder/decoder in java
+## Files
 
-To build: `mvn clean install`
-<br/><br/>
-Usage: `java Morse <-e|-d> [-a] "Hello World"`
-<br/><br/>
-Supports characters `A-Z`, `0-9` and special characters `. , ? \ ! / & : ; - _ " $ @ = +`
+| File | Description |
+|------|-------------|
+| `morse.jar` | Pre-built executable JAR (Java 21) |
+| `Main.java` | CLI entry point, argument parsing |
+| `MorseConverter.java` | Encode/decode logic |
+| `MorsePlayer.java` | Audio tone playback via `javax.sound` |
+| `MorseConverterTest.java` | JUnit 5 unit tests |
+| `pom.xml` | Maven build file |
 
-**From command line:**
-<br/>
-Encode an alphanumeric string: `java Morse -e -a "plain text"` -> `.--. .-.. .- .. -. - . -..- -`
-<br/>
-Decode a string of dits and dahs: `java Morse -d -a "... --- ..."` -> `SOS`
+## Requirements
 
-**Execute using Maven:**
-<br/>
-Encode a string with audio: `mvn exec:java -Dexec.args="-e -a \"once upon a time\""`
-<br/>
-Decode a string without audio: `mvn exec:java -Dexec.args="-d \"... --- ...\""`
-<br/><br/>
-To increase/decrease the encoding speed modify the `DOT_DURATION` variable
+- Java 17+ JRE to **run** the pre-built JAR
+- Java 17+ JDK + Maven to **build from source**
+
+## Usage
+
+```bash
+# Encode text → Morse
+java -jar morse.jar encode "Hello World"
+
+# Decode Morse → text
+java -jar morse.jar decode ".... . .-.. .-.. --- / .-- --- .-. .-.. -.."
+
+# Encode with audio tones
+java -jar morse.jar encode --play "SOS"
+
+# Decode with audio tones
+java -jar morse.jar decode --play "... --- ..."
+
+# Help
+java -jar morse.jar --help
+```
+
+## Morse Format
+
+- `.` = dot, `-` = dash
+- Single **space** separates letters
+- ` / ` (space-slash-space) separates words
+
+## Supported Characters
+
+- Letters: A–Z (case-insensitive)
+- Digits: 0–9
+- Punctuation: `. , ? ! - / @ ( )`
+
+## Audio Playback (`--play`)
+
+Uses Java's built-in `javax.sound.sampled` API — no external dependencies.
+
+- **Frequency:** 700 Hz (classic Morse receiver tone)
+- **Speed:** ~20 WPM standard timing
+  - Dot = 60 ms
+  - Dash = 180 ms
+  - Letter gap = 180 ms
+  - Word gap = 420 ms
+- Sine-wave with ramp envelope to eliminate clicks
+
+## Build from Source
+
+```bash
+# With Maven (builds fat JAR → target/morse.jar)
+mvn package
+
+# Run tests
+mvn test
+```
+
+## Examples
+
+```
+$ java -jar morse.jar encode "SOS"
+┌─ Input (Text) ────────────────────────────────────────
+│  SOS
+├─ Output (Morse) ──────────────────────────────────────
+│  ... --- ...
+└───────────────────────────────────────────────────────
+
+$ java -jar morse.jar decode "-- --- .-. ... ."
+┌─ Input (Morse) ───────────────────────────────────────
+│  -- --- .-. ... .
+├─ Output (Text) ───────────────────────────────────────
+│  MORSE
+└───────────────────────────────────────────────────────
+```

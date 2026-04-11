@@ -1,130 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.tauasa</groupId>
-	<artifactId>morse</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0.0</version>
-	<name>Tui Morse</name>
-	<description>
-	Simple Morse Code encoder/decoder
-	</description>
-	<url>http://www.tauasa.org/</url>
-	<inceptionYear>2026</inceptionYear>
+  <groupId>org.tauasa.apps.morse</groupId>
+  <artifactId>morse</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+  <url>https://github.com/tauasa/morse</url>
+  <name>Morse Code Converter</name>
+  <description>CLI app to convert text ↔ Morse code with optional audio playback</description>
 
-	<organization>
-		<name>Tauasa Timoteo</name>
-		<url>http://www.tauasa.org/</url>
-	</organization>
+  <licenses>
+    <license>
+        <name>MIT</name>
+          <url>http://www.opensource.org/licenses/mit-license.php</url>
+          <distribution>repo</distribution>
+        <comments>A business-friendly OSS license</comments>
+      </license>
+  </licenses>
 
-	<licenses>
-		<license>
-			<name>MIT</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-            <distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-  		</license>
-	</licenses>
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<compiler.source>22</compiler.source>
-		<compiler.target>22</compiler.target>
-	</properties>
+  <developers>
+    <developer>
+      <id>grand_high_poobah</id>
+      <name>Tauasa Timoteo</name>
+      <email>tauasa@gmail.org</email>
+      <url>http://www.tauasa.org/</url>
+      <organization>Tui Stuffs</organization>
+      <organizationUrl>http://www.tauasa.org</organizationUrl>
+    </developer>
+  </developers>
 
-	<developers>
-		<developer>
-			<id>tui</id>
-			<name>Tauasa Timoteo</name>
-			<email>tauasa@gmail.org</email>
-			<url>http://www.tauasa.org/</url>
-			<organization>Tui</organization>
-			<organizationUrl>http://www.tauasa.org</organizationUrl>
-		</developer>
-	</developers>
+  <dependencies>
+    <!-- JUnit 5 for unit tests -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-	<dependencyManagement>
-		<dependencies>
+  <build>
+    <plugins>
+      <!-- Compile -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+      </plugin>
 
-		</dependencies>
-	</dependencyManagement>
+      <!-- Test runner -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+      </plugin>
 
-
-	<dependencies>
-
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>5.10.0</version>
-			<scope>test</scope>
-		</dependency>
-
-	</dependencies>
-
-	<build>
-
-		<sourceDirectory>src/main/java</sourceDirectory>
-
-		<pluginManagement>
-			<plugins>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.11.0</version>
-				</plugin>
-
-				<plugin>
-	        		<groupId>org.apache.maven.plugins</groupId>
-	        		<artifactId>maven-jar-plugin</artifactId>
-	        		<version>3.3.0</version>
-	        	</plugin>
-
-			</plugins>
-		</pluginManagement>
-
-		<plugins>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <mainClass>Morse</mainClass>
-                </configuration>
-            </plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${compiler.source}</source>
-					<target>${compiler.target}</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-        		<groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-jar-plugin</artifactId>
-        		<configuration>
-        			<archive>
-        				<manifest>
-							<mainClass>Morse</mainClass>
-        					<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-        					<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-       					</manifest>
-      				</archive>
-      			</configuration>
-      		</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.2</version>
-			</plugin>
-
-		</plugins>
-	</build>
-
+      <!-- Fat JAR (includes all dependencies) -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals><goal>shade</goal></goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.tauasa.apps.morse.Main</mainClass>
+                </transformer>
+              </transformers>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
+              <finalName>morse</finalName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
