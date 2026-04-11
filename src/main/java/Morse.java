@@ -37,11 +37,12 @@ public class Morse {
     static final int SAMPLE_RATE = 44100;
     static final int SAMPLE_SIZE = 8; // 8 bits per sample
     static final int NUM_CHANNELS = 1; // Mono
-    static final int DOT_DURATION = 100; // Duration of a dot in milliseconds
+    static final int DOT_DURATION = 80; // Duration of a dot in milliseconds
     static final int DASH_DURATION = DOT_DURATION * 3; // Duration of a dash is dot * 3
-    static final int SPACE_DURATION = DOT_DURATION * 7; // time between words is dot * 7
+    static final int LETTER_SPACE_DURATION = DOT_DURATION * 3;//time between letters is dot * 3
+    static final int WORD_SPACE_DURATION = DOT_DURATION * 7; // time between words is dot * 7
     static final int FREQUENCY = 800; // Frequency of the Morse code tone in Hz
-    static final Pattern ALPHANUMERIC_PATTERN = Pattern.compile("[0-9a-zA-Z\\s]+");
+    static final Pattern CHAR_PATTERN = Pattern.compile("[0-9a-zA-Z\\s\\.\\,\\?\\\\!\\/\\&\\:\\;\\-\\_\\\"\\$\\@\\=\\+]+");
     static final Pattern DOTS_DASHES_PATTERN = Pattern.compile("[\\.\\-\\s]+");
     private boolean playAudio = true;
 
@@ -98,16 +99,26 @@ public class Morse {
         
         Morse morse = new Morse(audioFlag);
 
-        if(encode){
-            System.out.println("Encoding: " + text);
-            System.out.println("Encoded: " + morse.encode(text));
-            System.exit(0);
-        }else if(!"-d".equals(args[0])){
-            usage();
+        try {
+
+            if(encode){
+                System.out.println("Encoding: " + text);
+                System.out.println("Encoded: " + morse.encode(text));
+                System.exit(0);
+            }else if(!"-d".equals(args[0])){
+                usage();
+                System.exit(1);
+            }
+            System.out.println("Decoding: " + text);
+            System.out.println("Decoded: " + morse.decode(text));
+            
+        } catch (Exception e) {
+            System.err.println("Doh!: " + e.getMessage());
             System.exit(1);
         }
-        System.out.println("Decoding: " + text);
-        System.out.println("Decoded: " + morse.decode(text));
+
+
+        
         System.exit(0);
     }
 
@@ -128,8 +139,8 @@ public class Morse {
     }
 
     public String encode(String text)throws Exception{
-        if(!ALPHANUMERIC_PATTERN.matcher(text).matches()){
-            throw new IllegalArgumentException("Can only encode alphanumerics. White space is ignored.)");
+        if(!CHAR_PATTERN.matcher(text).matches()){
+            throw new IllegalArgumentException("One or more characters cannot be encoded to Morse code: " + text);
         }
         String[] words = text.split(" ");
         StringBuilder encoded = new StringBuilder();
@@ -144,28 +155,22 @@ public class Morse {
                     encoded.append(code).append(" ");
                     if(playAudio){
                         char[] dotsNDashes = code.toCharArray();
-                        for(char c : dotsNDashes){
+                        for(int j=0;j<dotsNDashes.length;j++){
+                            char c = dotsNDashes[j];
                             if(c != '.' && c != '-'){
-                                throw new IllegalArgumentException("Invalid Morse code: " + code);
+                                throw new IllegalArgumentException("Invalid Morse character: " + code);
                             }
                             switch (c) {
-                                case '.':
-                                    playTone(DOT_DURATION, FREQUENCY);
-                                    break;
-                                case '-':
-                                    playTone(DASH_DURATION, FREQUENCY);
-                                    break;
-                                default:
-                                    System.err.println("Character not supported: " + c);
-                                    break;
+                                case '.' -> playTone(DOT_DURATION, FREQUENCY);
+                                case '-' -> playTone(DASH_DURATION, FREQUENCY);
                             }
+                            Thread.sleep(LETTER_SPACE_DURATION); // short pause between letters
                         }
                     }
                 }
             }
-            if(i < words.length - 1){
-                Thread.sleep(SPACE_DURATION); // Pause between words
-            }
+            System.out.println(" ");
+            Thread.sleep(WORD_SPACE_DURATION); // long pause between words
         }
         return encoded.toString().trim();
     }

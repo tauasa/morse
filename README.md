@@ -21,3 +21,4 @@ Encode a string with audio: `mvn exec:java -Dexec.args="-e -a \"once upon a time
 <br/>
 Decode a string without audio: `mvn exec:java -Dexec.args="-d \"... --- ...\""`
 <br/><br/>
+To increase/decrease the encoding speed modify the `DOT_DURATION` variable
