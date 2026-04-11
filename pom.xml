@@ -29,8 +29,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<compiler.source>17</compiler.source>
-		<compiler.target>17</compiler.target>
+		<compiler.source>22</compiler.source>
+		<compiler.target>22</compiler.target>
 	</properties>
 
 	<developers>
