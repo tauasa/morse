@@ -1,7 +1,7 @@
 
 # **morse (-- --- .-. ... .)**
 
-Simple Morse Code encoder/decoder in java. This doesn't produce CW but can be used over GMRS
+Simple Morse Code encoder/decoder in java
 
 To build: `mvn clean install`
 <br/><br/>
