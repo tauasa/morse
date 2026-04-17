@@ -47,6 +47,7 @@ public class Main {
         COMMANDS:
           encode    Convert plain text to Morse code
           decode    Convert Morse code to plain text
+          gui       Runs the GUI (overrides other commands)
 
         OPTIONS:
           --play    Play audio tones while printing output
@@ -62,6 +63,7 @@ public class Main {
           java -jar morse.jar encode --play "SOS"
           java -jar morse.jar decode "... --- ..."
           java -jar morse.jar decode --play ".... . .-.. .-.. --- / .-- --- .-. .-.. -.."
+          java -jar morse.jar gui
 
         SUPPORTED CHARACTERS:
           A-Z, 0-9, and punctuation: . , ? ! - / @ ( )
@@ -77,11 +79,15 @@ public class Main {
         if (args[0].equals("--help") || args[0].equals("-h")) {
             System.out.println(HELP);
             return;
+        }else if (args[0].equals("gui")) {
+            System.out.println("Running GUI...");
+            MorseGui.main(args);
+            return;
         }
 
         String command = args[0].toLowerCase();
-        if (!command.equals("encode") && !command.equals("decode")) {
-            printError("Unknown command: '" + args[0] + "'. Expected 'encode' or 'decode'.");
+        if (!command.equals("encode") && !command.equals("decode") && !command.equals("gui")) {
+            printError("Unknown command: '" + args[0] + "'. Expected 'encode', 'decode', or 'gui'.");
             System.exit(1);
         }
 

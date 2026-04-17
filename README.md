@@ -33,6 +33,12 @@ java -jar morse.jar encode --play "SOS"
 # Decode with audio tones
 java -jar morse.jar decode --play "... --- ..."
 
+# Run the GUI
+java -jar morse.jar gui
+
+# Run the GUI using Maven
+mvn javafx:run
+
 # Help
 java -jar morse.jar --help
 ```
