@@ -256,7 +256,7 @@ public class MainWindow {
         Label title = new Label("Morse 2.0.0");
         title.getStyleClass().add("about-title");
 
-        Label body = new Label("A simple Morse code encoder, decoder, and player.\n\n© 2026 Tauasa Timoteo");
+        Label body = new Label("A simple Morse code encoder, decoder, and player.\n© 2026 Tauasa Timoteo\nhttps://github.com/tauasa/morse");
         body.getStyleClass().add("about-body");
         body.setAlignment(Pos.CENTER);
 
