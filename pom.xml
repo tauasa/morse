@@ -7,7 +7,7 @@
 
   <groupId>org.tauasa.apps.morse</groupId>
   <artifactId>morse</artifactId>
-  <version>1.0.0</version>
+  <version>2.0.0</version>
   <packaging>jar</packaging>
   <url>https://github.com/tauasa/morse</url>
   <name>Morse Code Converter</name>
@@ -26,6 +26,8 @@
     <maven.compiler.source>22</maven.compiler.source>
     <maven.compiler.target>22</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <javafx.version>22.0.2</javafx.version>
+    <main.class>org.tauasa.apps.morse.Main</main.class>
   </properties>
 
   <developers>
@@ -40,6 +42,13 @@
   </developers>
 
   <dependencies>
+    <!-- JavaFX Controls -->
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+
     <!-- JUnit 5 for unit tests -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -65,6 +74,16 @@
         <version>3.2.5</version>
       </plugin>
 
+      <!-- javafx:run (development shortcut: mvn javafx:run) -->
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.8</version>
+        <configuration>
+          <mainClass>${main.class}</mainClass>
+        </configuration>
+      </plugin>
+
       <!-- Fat JAR (includes all dependencies) -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -78,7 +97,7 @@
               <createDependencyReducedPom>false</createDependencyReducedPom>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>org.tauasa.apps.morse.Main</mainClass>
+                  <mainClass>${main.class}</mainClass>
                 </transformer>
               </transformers>
               <shadedArtifactAttached>false</shadedArtifactAttached>

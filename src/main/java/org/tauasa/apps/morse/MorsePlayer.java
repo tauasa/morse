@@ -85,6 +85,28 @@ public class MorsePlayer implements Closeable {
         line.drain();
     }
 
+    /** Returns true if audio output is available on this system. */
+    public boolean isAvailable() {
+        return line != null;
+    }
+
+    /**
+     * Plays the given Morse string as tones on a background thread.
+     * Returns immediately; call {@link #stopAndDrain()} to wait for completion.
+     *
+     * @param morse  Morse string (dots, dashes, spaces, "/" word separators)
+     * @param onDone Runnable called on the calling thread when playback ends
+     */
+    public Thread playAsync(String morse, Runnable onDone) {
+        Thread t = new Thread(() -> {
+            play(morse);
+            if (onDone != null) onDone.run();
+        }, "morse-audio");
+        t.setDaemon(true);
+        t.start();
+        return t;
+    }
+
     // ── Internals ──────────────────────────────────────────────────────────────
 
     /** Outputs a sine-wave tone for the given duration (ms). */

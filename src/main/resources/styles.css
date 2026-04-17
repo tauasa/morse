@@ -1,0 +1,179 @@
+/* ═══════════════════════════════════════════════
+   Morse Code Converter – Application Stylesheet
+   ═══════════════════════════════════════════════ */
+
+/* ── Root / Window background ─────────────────── */
+.root {
+    -fx-background-color: #f0f2f5;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* ── Menu bar ──────────────────────────────────── */
+.menu-bar {
+    -fx-background-color: #2c2c2e;
+    -fx-padding: 2 4 2 4;
+}
+
+.menu-bar .menu .label {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 13px;
+}
+
+.menu-bar .menu:hover,
+.menu-bar .menu:showing {
+    -fx-background-color: #48484a;
+    -fx-background-radius: 4;
+}
+
+.context-menu {
+    -fx-background-color: #2c2c2e;
+    -fx-border-color: #444;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0, 0, 4);
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 6 16 6 16;
+}
+
+.menu-item .label {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 13px;
+}
+
+.menu-item:focused,
+.menu-item:hover {
+    -fx-background-color: #0a84ff;
+    -fx-background-radius: 4;
+}
+
+/* ── Section labels ("Text" / "Morse") ─────────── */
+.section-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1c1c1e;
+    -fx-padding: 0 0 2 2;
+}
+
+/* ── Text areas ────────────────────────────────── */
+.text-area-main {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d1d6;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, 0, 1);
+}
+
+.text-area-main:focused {
+    -fx-border-color: #0a84ff;
+    -fx-effect: dropshadow(gaussian, rgba(10,132,255,0.25), 6, 0, 0, 0);
+}
+
+.text-area-main .content {
+    -fx-background-color: white;
+    -fx-background-radius: 7;
+    -fx-padding: 8;
+}
+
+.text-area-main .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+}
+
+.text-area-main .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ── Mono style applied to Morse text area ─────── */
+.morse-area {
+    -fx-font-family: "Courier New", "Consolas", monospace;
+    -fx-font-size: 14px;
+}
+
+/* ── Action buttons ────────────────────────────── */
+.action-btn {
+    -fx-background-color: #0a84ff;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 7 20 7 20;
+    -fx-background-radius: 7;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(10,132,255,0.30), 6, 0, 0, 2);
+}
+
+.action-btn:hover {
+    -fx-background-color: #0070d8;
+    -fx-effect: dropshadow(gaussian, rgba(10,132,255,0.45), 8, 0, 0, 3);
+}
+
+.action-btn:pressed {
+    -fx-background-color: #005ec0;
+    -fx-effect: dropshadow(gaussian, rgba(10,132,255,0.20), 4, 0, 0, 1);
+    -fx-translate-y: 1;
+}
+
+.action-btn:disabled {
+    -fx-background-color: #a0c4f0;
+    -fx-effect: none;
+    -fx-opacity: 0.7;
+}
+
+/* ── Checkboxes ────────────────────────────────── */
+.check-box {
+    -fx-text-fill: #3c3c43;
+    -fx-font-size: 13px;
+}
+
+.check-box .box {
+    -fx-background-color: white;
+    -fx-border-color: #c7c7cc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #0a84ff;
+    -fx-border-color: #0a84ff;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+/* ── Separator ─────────────────────────────────── */
+.separator .line {
+    -fx-border-color: #d1d1d6;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* ── Status bar ────────────────────────────────── */
+.status-bar {
+    -fx-background-color: #e5e5ea;
+    -fx-font-size: 12px;
+    -fx-text-fill: #3c3c43;
+    -fx-border-color: #c7c7cc;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 5 14 5 14;
+}
+
+/* ── About dialog ──────────────────────────────── */
+.about-box {
+    -fx-background-color: #f0f2f5;
+}
+
+.about-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1c1c1e;
+}
+
+.about-body {
+    -fx-font-size: 13px;
+    -fx-text-fill: #3c3c43;
+    -fx-text-alignment: center;
+}

@@ -1,6 +1,7 @@
 # Morse Code Converter
 
-A Java command-line application that converts text ↔ Morse code with optional audio playback.
+A Java application that converts text ↔ Morse code with optional audio playback. Can be executed 
+as a command line app or GUI that uses JavaFX.
 
 ## Files
 
@@ -8,7 +9,9 @@ A Java command-line application that converts text ↔ Morse code with optional 
 |------|-------------|
 | `morse.jar` | Pre-built executable JAR (Java 21) |
 | `Main.java` | CLI entry point, argument parsing |
+| `MainWindow.java` | GUI window |
 | `MorseConverter.java` | Encode/decode logic |
+| `MorseGui.java` | JavaFX application entry point |
 | `MorsePlayer.java` | Audio tone playback via `javax.sound` |
 | `MorseConverterTest.java` | JUnit 5 unit tests |
 | `pom.xml` | Maven build file |
@@ -32,6 +35,9 @@ java -jar morse.jar encode --play "SOS"
 
 # Decode with audio tones
 java -jar morse.jar decode --play "... --- ..."
+
+# Run the GUI
+java -jar morse.jar gui
 
 # Help
 java -jar morse.jar --help
@@ -72,7 +78,7 @@ mvn test
 ```
 
 ## Examples
-
+### Command Line
 ```
 $ java -jar morse.jar encode "SOS"
 ┌─ Input (Text) ────────────────────────────────────────
@@ -88,3 +94,8 @@ $ java -jar morse.jar decode "-- --- .-. ... ."
 │  MORSE
 └───────────────────────────────────────────────────────
 ```
+
+### GUI
+![Alt text](gui.jpg)
+
+
