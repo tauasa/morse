@@ -1,5 +1,6 @@
 package org.tauasa.apps.morse;
 
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +10,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -45,9 +48,10 @@ public class MainWindow {
     private static final double AREA_H = 170;
 
     // ── State ──────────────────────────────────────────────────────────────────
-    private final Stage        stage;
-    private final MorseConverter converter = new MorseConverter();
-    private final MorsePlayer    player    = new MorsePlayer();
+    private final Stage             stage;
+    private final HostServices      hostServices;
+    private final MorseConverter    converter = new MorseConverter();
+    private final MorsePlayer       player = new MorsePlayer();
 
     // ── Controls ───────────────────────────────────────────────────────────────
     private TextArea textArea;
@@ -58,8 +62,9 @@ public class MainWindow {
     private Button   encodeBtn;
     private Button   decodeBtn;
 
-    public MainWindow(Stage stage) {
+    public MainWindow(Stage stage, HostServices hostServices) {
         this.stage        = stage;
+        this.hostServices = hostServices;
     }
 
     // ── Public entry point ─────────────────────────────────────────────────────
@@ -234,9 +239,15 @@ public class MainWindow {
         Label title = new Label("Morse 2.0.0");
         title.getStyleClass().add("about-title");
 
-        Label body = new Label("Tauasa Timoteo\n" + REPO_URL);
+        Label body = new Label("© 2026 Tauasa Timoteo\n");
         body.getStyleClass().add("about-body");
         body.setAlignment(Pos.CENTER);
+
+        // ── Hyperlink label ──────────────────────────────────────────────────
+        HyperlinkLabel sourceLink = new HyperlinkLabel(
+            "Source code:  ", REPO_URL, hostServices
+        );
+        sourceLink.setTextAlignment(TextAlignment.CENTER);
 
         Button ok = new Button("OK");
         ok.getStyleClass().add("action-btn");
@@ -244,7 +255,7 @@ public class MainWindow {
         ok.setPrefWidth(88);
         ok.setOnAction(e -> dialog.close());
 
-        VBox layout = new VBox(12, title, body, ok);
+        VBox layout = new VBox(12, title, body, sourceLink, ok);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(32, 40, 28, 40));
         layout.getStyleClass().add("about-box");
@@ -296,5 +307,37 @@ public class MainWindow {
     private static void loadStylesheet(Scene scene) {
         var url = MainWindow.class.getResource(CSS_PATH);
         if (url != null) scene.getStylesheets().add(url.toExternalForm());
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    //  Inner class: HyperlinkLabel (used in About dialog)
+    // ══════════════════════════════════════════════════════════════════════════
+
+    static class HyperlinkLabel extends TextFlow {
+
+        public HyperlinkLabel(String labelText, String url, HostServices hostServices) {
+            super();
+
+            // Plain prefix text ─────────────────────────────────────────────────
+            Text prefix = new Text(labelText);
+            prefix.getStyleClass().add("hyperlink-label-text");
+
+            // Clickable hyperlink ────────────────────────────────────────────────
+            Hyperlink link = new Hyperlink(url);
+            link.getStyleClass().add("hyperlink-label-link");
+
+            // Remove default padding so it sits flush with the surrounding text
+            link.setPadding(javafx.geometry.Insets.EMPTY);
+
+            link.setOnAction(e -> {
+                if (hostServices != null) {
+                    hostServices.showDocument(url);
+                }
+                // Mark visited state so JavaFX stops re-styling it on every click
+                link.setVisited(false);
+            });
+
+            getChildren().addAll(prefix, link);
+        }
     }
 }
