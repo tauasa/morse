@@ -29,6 +29,7 @@ package org.tauasa.apps.morse;
  * Usage:
  *   java -jar morse.jar encode [--play] <text>
  *   java -jar morse.jar decode [--play] <morse>
+ *   java -jar morse.jar gui
  *   java -jar morse.jar --help
  *
  * Morse input uses '.' for dot, '-' for dash, ' ' between letters, '/' between words.

@@ -22,13 +22,13 @@ import javafx.stage.Stage;
  *   │  ┌──────────────────────────────────────┐  │
  *   │  │  plain-text TextArea                 │  │
  *   │  └──────────────────────────────────────┘  │
- *   │  [Encode →]   ☐ Play sound                 │
+ *   │  [Encode →]   ☐ Play sound        [Clear]  │
  *   ├────────────────────────────────────────────┤
  *   │  Morse  (label)                            │
  *   │  ┌──────────────────────────────────────┐  │
  *   │  │  Morse-code TextArea  (monospaced)   │  │
  *   │  └──────────────────────────────────────┘  │
- *   │  [← Decode]   ☐ Play sound                 │
+ *   │  [← Decode]   ☐ Play sound        [Clear]  │
  *   └────────────────────────────────────────────┘
  *   Status bar
  */
@@ -96,12 +96,17 @@ public class MainWindow {
         Menu fileMenu = new Menu("File");
         fileMenu.getItems().add(exitItem);
 
+        MenuItem clearItem = new MenuItem("Clear All");
+        clearItem.setOnAction(e -> { textArea.clear(); morseArea.clear(); setStatus("All cleared.", false); });
+        Menu editMenu = new Menu("Edit");
+        editMenu.getItems().add(clearItem);
+
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(e -> showAboutDialog());
         Menu helpMenu = new Menu("Help");
         helpMenu.getItems().add(aboutItem);
 
-        MenuBar bar = new MenuBar(fileMenu, helpMenu);
+        MenuBar bar = new MenuBar(fileMenu, editMenu, helpMenu);
         bar.setUseSystemMenuBar(false);
         return bar;
     }

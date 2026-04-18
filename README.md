@@ -1,7 +1,6 @@
 # Morse Code Converter
 
-A Java application that converts text ↔ Morse code with optional audio playback. Can be executed 
-as a command line app or GUI that uses JavaFX.
+A Java application that converts text ↔ Morse code with optional audio playback. It can be executed as a command line app or GUI that uses JavaFX.
 
 ## Files
 
@@ -98,4 +97,6 @@ $ java -jar morse.jar decode "-- --- .-. ... ."
 ### GUI
 ![Alt text](gui.jpg)
 
+## Notes
 
+This app doesn't use CW (it uses Java's built in sound API) so it can't be sent transmitted like normal Morse code. But the output is suitable to send using FM using GMRS frequencies.
