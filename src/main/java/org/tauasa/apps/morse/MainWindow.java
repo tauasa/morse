@@ -4,21 +4,11 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -44,22 +34,22 @@ import javafx.stage.Stage;
  */
 public class MainWindow {
 
-    // ── Constants ──────────────────────────────────────────────────────────────
-    private static final String APP_TITLE  = "Morse Code Converter";
-    private static final String CSS_PATH   = "/styles.css";
+    private static final String APP_TITLE = "Morse Code Converter";
+    private static final String CSS_PATH  = "/styles.css";
+    private static final String REPO_URL  = "https://github.com/tauasa/morse";
 
-    private static final double WIN_W      = 700;
-    private static final double WIN_H      = 620;
-    private static final double MIN_W      = 500;
-    private static final double MIN_H      = 480;
-    private static final double AREA_H     = 170;
+    private static final double WIN_W  = 700;
+    private static final double WIN_H  = 620;
+    private static final double MIN_W  = 500;
+    private static final double MIN_H  = 480;
+    private static final double AREA_H = 170;
 
     // ── State ──────────────────────────────────────────────────────────────────
-    private final Stage          stage;
+    private final Stage        stage;
     private final MorseConverter converter = new MorseConverter();
     private final MorsePlayer    player    = new MorsePlayer();
 
-    // ── Controls (assigned during build, used in action handlers) ─────────────
+    // ── Controls ───────────────────────────────────────────────────────────────
     private TextArea textArea;
     private TextArea morseArea;
     private CheckBox textPlayCheck;
@@ -68,10 +58,8 @@ public class MainWindow {
     private Button   encodeBtn;
     private Button   decodeBtn;
 
-    // ── Constructor ────────────────────────────────────────────────────────────
-
     public MainWindow(Stage stage) {
-        this.stage = stage;
+        this.stage        = stage;
     }
 
     // ── Public entry point ─────────────────────────────────────────────────────
@@ -81,7 +69,6 @@ public class MainWindow {
         stage.setScene(buildScene());
         stage.setMinWidth(MIN_W);
         stage.setMinHeight(MIN_H);
-        // Close audio cleanly when the window's X button is clicked
         stage.setOnCloseRequest(e -> player.close());
         stage.show();
     }
@@ -104,20 +91,18 @@ public class MainWindow {
     // ── Menu bar ───────────────────────────────────────────────────────────────
 
     private MenuBar buildMenuBar() {
-        /* File menu */
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction(e -> { player.close(); Platform.exit(); });
         Menu fileMenu = new Menu("File");
         fileMenu.getItems().add(exitItem);
 
-        /* Help menu */
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(e -> showAboutDialog());
         Menu helpMenu = new Menu("Help");
         helpMenu.getItems().add(aboutItem);
 
         MenuBar bar = new MenuBar(fileMenu, helpMenu);
-        bar.setUseSystemMenuBar(false);   // dark bar looks the same on all OS
+        bar.setUseSystemMenuBar(false);
         return bar;
     }
 
@@ -127,16 +112,10 @@ public class MainWindow {
         VBox center = new VBox(14);
         center.setPadding(new Insets(18, 18, 12, 18));
         VBox.setVgrow(center, Priority.ALWAYS);
-
-        center.getChildren().addAll(
-            buildTextPanel(),
-            buildDivider(),
-            buildMorsePanel()
-        );
+        center.getChildren().addAll(buildTextPanel(), buildDivider(), buildMorsePanel());
         return center;
     }
 
-    /** Upper panel – plain text input + Encode button. */
     private VBox buildTextPanel() {
         Label heading = sectionLabel("Text");
 
@@ -153,11 +132,13 @@ public class MainWindow {
 
         textPlayCheck = new CheckBox("Play sound");
 
-        HBox toolbar = toolbar(encodeBtn, textPlayCheck);
-        return panel(heading, textArea, toolbar);
+        Button clearTextBtn = new Button("Clear");
+        clearTextBtn.getStyleClass().add("clear-btn");
+        clearTextBtn.setOnAction(e -> { textArea.clear(); setStatus("Text cleared.", false); });
+
+        return panel(heading, textArea, toolbar(encodeBtn, textPlayCheck, clearTextBtn));
     }
 
-    /** Lower panel – Morse code input + Decode button. */
     private VBox buildMorsePanel() {
         Label heading = sectionLabel("Morse");
 
@@ -174,8 +155,11 @@ public class MainWindow {
 
         morsePlayCheck = new CheckBox("Play sound");
 
-        HBox toolbar = toolbar(decodeBtn, morsePlayCheck);
-        return panel(heading, morseArea, toolbar);
+        Button clearMorseBtn = new Button("Clear");
+        clearMorseBtn.getStyleClass().add("clear-btn");
+        clearMorseBtn.setOnAction(e -> { morseArea.clear(); setStatus("Morse cleared.", false); });
+
+        return panel(heading, morseArea, toolbar(decodeBtn, morsePlayCheck, clearMorseBtn));
     }
 
     private Separator buildDivider() {
@@ -197,10 +181,7 @@ public class MainWindow {
 
     private void doEncode() {
         String input = textArea.getText();
-        if (input == null || input.isBlank()) {
-            setStatus("⚠  Enter some text to encode.", true);
-            return;
-        }
+        if (input == null || input.isBlank()) { setStatus("⚠  Enter some text to encode.", true); return; }
         try {
             String morse = converter.encode(input);
             morseArea.setText(morse);
@@ -213,10 +194,7 @@ public class MainWindow {
 
     private void doDecode() {
         String input = morseArea.getText();
-        if (input == null || input.isBlank()) {
-            setStatus("⚠  Enter some Morse code to decode.", true);
-            return;
-        }
+        if (input == null || input.isBlank()) { setStatus("⚠  Enter some Morse code to decode.", true); return; }
         try {
             String text = converter.decode(input);
             textArea.setText(text);
@@ -228,18 +206,13 @@ public class MainWindow {
     }
 
     private void playAsync(String morse) {
-        if (!player.isAvailable()) {
-            setStatus("⚠  Audio output unavailable on this system.", true);
-            return;
-        }
+        if (!player.isAvailable()) { setStatus("⚠  Audio output unavailable on this system.", true); return; }
         setButtonsEnabled(false);
         setStatus("♪  Playing…", false);
-        player.playAsync(morse, () ->
-            Platform.runLater(() -> {
-                setButtonsEnabled(true);
-                setStatus("♪  Done.", false);
-            })
-        );
+        player.playAsync(morse, () -> Platform.runLater(() -> {
+            setButtonsEnabled(true);
+            setStatus("♪  Done.", false);
+        }));
     }
 
     // ══════════════════════════════════════════════════════════════════════════
@@ -256,7 +229,7 @@ public class MainWindow {
         Label title = new Label("Morse 2.0.0");
         title.getStyleClass().add("about-title");
 
-        Label body = new Label("A simple Morse code encoder, decoder, and player.\n© 2026 Tauasa Timoteo\nhttps://github.com/tauasa/morse");
+        Label body = new Label("Tauasa Timoteo\n" + REPO_URL);
         body.getStyleClass().add("about-body");
         body.setAlignment(Pos.CENTER);
 
@@ -271,32 +244,33 @@ public class MainWindow {
         layout.setPadding(new Insets(32, 40, 28, 40));
         layout.getStyleClass().add("about-box");
 
-        Scene scene = new Scene(layout, 360, 200);
+        Scene scene = new Scene(layout, 380, 230);
         loadStylesheet(scene);
         dialog.setScene(scene);
         dialog.showAndWait();
     }
 
     // ══════════════════════════════════════════════════════════════════════════
-    //  Helper factories & utilities
+    //  Helpers
     // ══════════════════════════════════════════════════════════════════════════
 
-    /** Stacks heading + main control + toolbar into a VBox panel. */
     private static VBox panel(Label heading, Control main, HBox toolbar) {
         VBox p = new VBox(6, heading, main, toolbar);
         VBox.setVgrow(p, Priority.ALWAYS);
         return p;
     }
 
-    /** Left-aligned horizontal toolbar row. */
-    private static HBox toolbar(Button btn, CheckBox check) {
-        HBox h = new HBox(14, btn, check);
+    private static HBox toolbar(Button actionBtn, CheckBox check, Button clearBtn) {
+        // Spacer grows to fill all available space, pushing clearBtn to the right
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox h = new HBox(14, actionBtn, check, spacer, clearBtn);
         h.setAlignment(Pos.CENTER_LEFT);
         h.setPadding(new Insets(4, 0, 0, 0));
         return h;
     }
 
-    /** Bold section heading label ("Text" / "Morse"). */
     private static Label sectionLabel(String text) {
         Label l = new Label(text);
         l.setFont(Font.font(null, FontWeight.BOLD, 13));
@@ -306,10 +280,7 @@ public class MainWindow {
 
     private void setStatus(String msg, boolean error) {
         statusLabel.setText(msg);
-        // Override only the fill colour; other styling comes from CSS
-        statusLabel.setStyle(error
-            ? "-fx-text-fill: #d00000;"
-            : "-fx-text-fill: #3c3c43;");
+        statusLabel.setStyle(error ? "-fx-text-fill: #d00000;" : "-fx-text-fill: #3c3c43;");
     }
 
     private void setButtonsEnabled(boolean on) {
@@ -317,11 +288,8 @@ public class MainWindow {
         decodeBtn.setDisable(!on);
     }
 
-    /** Loads styles.css from the JAR classpath. Falls back silently if missing. */
     private static void loadStylesheet(Scene scene) {
         var url = MainWindow.class.getResource(CSS_PATH);
-        if (url != null) {
-            scene.getStylesheets().add(url.toExternalForm());
-        }
+        if (url != null) scene.getStylesheets().add(url.toExternalForm());
     }
 }

@@ -177,3 +177,51 @@
     -fx-text-fill: #3c3c43;
     -fx-text-alignment: center;
 }
+
+/* ── Clear button (secondary / ghost style) ────── */
+.clear-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #636366;
+    -fx-font-size: 12px;
+    -fx-padding: 6 14 6 14;
+    -fx-background-radius: 7;
+    -fx-border-color: #c7c7cc;
+    -fx-border-radius: 7;
+    -fx-border-width: 1.5;
+    -fx-cursor: hand;
+}
+
+.clear-btn:hover {
+    -fx-background-color: #f2f2f7;
+    -fx-border-color: #aeaeb2;
+    -fx-text-fill: #3c3c43;
+}
+
+.clear-btn:pressed {
+    -fx-background-color: #e5e5ea;
+    -fx-translate-y: 1;
+}
+
+
+.hyperlink-label-text {
+    -fx-fill: #3c3c43;
+    -fx-font-size: 12px;
+}
+
+.hyperlink-label-link {
+    -fx-text-fill: #0a84ff;
+    -fx-font-size: 12px;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.hyperlink-label-link:hover {
+    -fx-text-fill: #0070d8;
+}
+
+.hyperlink-label-link:visited {
+    -fx-text-fill: #0a84ff;  /* keep same colour – no purple visited state */
+}
