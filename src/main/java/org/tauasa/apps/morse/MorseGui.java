@@ -15,7 +15,8 @@ public class MorseGui extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        new MainWindow(primaryStage).show();
+        // Pass HostServices so HyperlinkLabel can open the browser
+        new MainWindow(primaryStage, getHostServices()).show();
     }
 
     /** Fat-JAR / class-path compatible launcher. */

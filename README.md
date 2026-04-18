@@ -79,14 +79,14 @@ mvn test
 ## Examples
 ### Command Line
 ```
-$ java -jar morse.jar encode "SOS"
+$ java -jar morse.jar encode --play "SOS"
 ┌─ Input (Text) ────────────────────────────────────────
 │  SOS
 ├─ Output (Morse) ──────────────────────────────────────
 │  ... --- ...
 └───────────────────────────────────────────────────────
 
-$ java -jar morse.jar decode "-- --- .-. ... ."
+$ java -jar morse.jar decode --play "-- --- .-. ... ."
 ┌─ Input (Morse) ───────────────────────────────────────
 │  -- --- .-. ... .
 ├─ Output (Text) ───────────────────────────────────────
@@ -95,6 +95,9 @@ $ java -jar morse.jar decode "-- --- .-. ... ."
 ```
 
 ### GUI
+```
+java -jar morse.jar gui
+```
 ![Alt text](gui.jpg)
 
 ## Notes
