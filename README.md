@@ -99,7 +99,3 @@ $ java -jar morse.jar decode --play "-- --- .-. ... ."
 java -jar morse.jar gui
 ```
 ![Alt text](gui.jpg)
-
-## Notes
-
-This app doesn't use CW (it uses Java's built in sound API) so it can't be sent transmitted like normal Morse code. But the output is suitable to send using FM using GMRS frequencies.
