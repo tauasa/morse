@@ -1,4 +1,4 @@
-# Morse Code Converter
+# Morse Code Converter/Player in Java
 
 A Java application that converts text ↔ Morse code with optional audio playback. It can be executed as a command line app or GUI that uses JavaFX.
 
