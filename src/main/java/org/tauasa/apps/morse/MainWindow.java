@@ -32,7 +32,7 @@ import javafx.stage.Stage;
  * Main application window.
  *
  * Layout:
- *   MenuBar        File > Exit  |  Help > About
+ *   MenuBar-File > Exit | Edit...  |  Help > About
  *   ┌────────────────────────────────────────────┐
  *   │  Text  (label)                             │
  *   │  ┌──────────────────────────────────────┐  │
@@ -123,9 +123,15 @@ public class MainWindow {
             morsePlayCheck.setSelected(!morsePlayCheck.isSelected());
         });
 
+        MenuItem settingsItem = new MenuItem("Settings");
+        settingsItem.setOnAction(e -> {
+            showSettingsDialog();
+        });
+
         Menu editMenu = new Menu("Edit");
         editMenu.getItems().add(togglePlayItem);
         editMenu.getItems().add(clearItem);
+        editMenu.getItems().add(settingsItem);
 
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(e -> showAboutDialog());
@@ -257,6 +263,47 @@ public class MainWindow {
         dialog.initOwner(stage);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("About Morse");
+        dialog.setResizable(false);
+
+        Label title = new Label("Morse 2.0.0");
+        title.getStyleClass().add("about-title");
+
+        Label body = new Label("© 2026 Tauasa Timoteo\n");
+        body.getStyleClass().add("about-body");
+        body.setAlignment(Pos.CENTER);
+
+        // ── Hyperlink label ──────────────────────────────────────────────────
+        HyperlinkLabel sourceLink = new HyperlinkLabel(
+            "Source code:  ", REPO_URL, hostServices
+        );
+        sourceLink.setTextAlignment(TextAlignment.CENTER);
+
+        Button ok = new Button("OK");
+        ok.getStyleClass().add("action-btn");
+        ok.setDefaultButton(true);
+        ok.setPrefWidth(88);
+        ok.setOnAction(e -> dialog.close());
+
+        VBox layout = new VBox(12, title, body, sourceLink, ok);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(32, 40, 28, 40));
+        layout.getStyleClass().add("about-box");
+
+        Scene scene = new Scene(layout, 380, 230);
+        loadStylesheet(scene);
+        dialog.setScene(scene);
+        dialog.showAndWait();
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    //  Settings dialog
+    // ══════════════════════════════════════════════════════════════════════════
+
+    private void showSettingsDialog() {
+        Stage dialog = new Stage();
+        dialog.initOwner(stage);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("Settings");
         dialog.setResizable(false);
 
         Label title = new Label("Morse 2.0.0");
