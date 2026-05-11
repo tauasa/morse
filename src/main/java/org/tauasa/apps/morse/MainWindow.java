@@ -5,12 +5,25 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -103,7 +116,15 @@ public class MainWindow {
 
         MenuItem clearItem = new MenuItem("Clear All");
         clearItem.setOnAction(e -> { textArea.clear(); morseArea.clear(); setStatus("All cleared.", false); });
+
+        MenuItem togglePlayItem = new MenuItem("Toggle Play Sound");
+        togglePlayItem.setOnAction(e -> { 
+            textPlayCheck.setSelected(!textPlayCheck.isSelected());
+            morsePlayCheck.setSelected(!morsePlayCheck.isSelected());
+        });
+
         Menu editMenu = new Menu("Edit");
+        editMenu.getItems().add(togglePlayItem);
         editMenu.getItems().add(clearItem);
 
         MenuItem aboutItem = new MenuItem("About");
@@ -141,6 +162,7 @@ public class MainWindow {
         encodeBtn.setOnAction(e -> doEncode());
 
         textPlayCheck = new CheckBox("Play sound");
+        textPlayCheck.setSelected(true);
 
         Button clearTextBtn = new Button("Clear");
         clearTextBtn.getStyleClass().add("clear-btn");
@@ -164,6 +186,7 @@ public class MainWindow {
         decodeBtn.setOnAction(e -> doDecode());
 
         morsePlayCheck = new CheckBox("Play sound");
+        morsePlayCheck.setSelected(true);
 
         Button clearMorseBtn = new Button("Clear");
         clearMorseBtn.getStyleClass().add("clear-btn");
@@ -221,7 +244,7 @@ public class MainWindow {
         setStatus("♪  Playing…", false);
         player.playAsync(morse, () -> Platform.runLater(() -> {
             setButtonsEnabled(true);
-            setStatus("♪  Done.", false);
+            setStatus("Done.", false);
         }));
     }
 
