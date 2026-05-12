@@ -123,15 +123,16 @@ public class MainWindow {
             morsePlayCheck.setSelected(!morsePlayCheck.isSelected());
         });
 
+        /*
         MenuItem settingsItem = new MenuItem("Settings");
         settingsItem.setOnAction(e -> {
             showSettingsDialog();
-        });
+        });*/
 
         Menu editMenu = new Menu("Edit");
         editMenu.getItems().add(togglePlayItem);
         editMenu.getItems().add(clearItem);
-        editMenu.getItems().add(settingsItem);
+        //editMenu.getItems().add(settingsItem);
 
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(e -> showAboutDialog());
@@ -298,7 +299,7 @@ public class MainWindow {
     // ══════════════════════════════════════════════════════════════════════════
     //  Settings dialog
     // ══════════════════════════════════════════════════════════════════════════
-
+    /*
     private void showSettingsDialog() {
         Stage dialog = new Stage();
         dialog.initOwner(stage);
@@ -334,7 +335,7 @@ public class MainWindow {
         loadStylesheet(scene);
         dialog.setScene(scene);
         dialog.showAndWait();
-    }
+    }*/
 
     // ══════════════════════════════════════════════════════════════════════════
     //  Helpers
